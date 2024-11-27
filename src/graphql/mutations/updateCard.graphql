@@ -1,0 +1,13 @@
+mutation UpdateCard($input: UpdateCardInput!) {
+    updateCard(input: $input) {
+        id
+        backgroundColor
+        textColor
+        translatedTextColor
+        translation {
+            id
+            text
+            translatedText
+        }
+    }
+}
