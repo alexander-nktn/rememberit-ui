@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './Card.css';
-import Popup from '../popup/Popup';
+import EditCardWrapper from '../editCardWrapper/EditCardWrapper';
 
 type CardUpdateValues = {
   text: string;
@@ -22,7 +22,6 @@ type CardProps = {
 };
 
 const Card: React.FC<CardProps> = ({
-                                     // id,
                                      backgroundColor,
                                      textColor,
                                      translatedTextColor,
@@ -71,7 +70,7 @@ const Card: React.FC<CardProps> = ({
         </div>
       </div>
       {isPopupOpen && (
-        <Popup
+        <EditCardWrapper
           initialValues={{
             text: sourceText,
             translatedText,

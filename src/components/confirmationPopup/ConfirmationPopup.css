@@ -1,0 +1,33 @@
+.confirmation-popup {
+    text-align: center;
+    padding: 20px;
+}
+
+.confirmation-popup p {
+    font-size: 1.5rem;
+    margin-bottom: 30px;
+}
+
+.confirmation-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.confirmation-buttons .cancel-button,
+.confirmation-buttons .confirm-button {
+    padding: 12px 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    border: none;
+    border-radius: 8px;
+}
+
+.confirmation-buttons .cancel-button {
+    background-color: #cccccc;
+}
+
+.confirmation-buttons .confirm-button {
+    background-color: #f44336;
+    color: white;
+}
