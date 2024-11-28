@@ -1,0 +1,21 @@
+mutation GenerateCards($input: GenerateCardsInput!) {
+    generateCards(input: $input) {
+        id
+        backgroundColor
+        textColor
+        translatedTextColor
+        translation {
+            id
+            sourceLanguage
+            targetLanguage
+            text
+            translatedText
+        }
+        user {
+            id
+            firstName
+            lastName
+            email
+        }
+    }
+}

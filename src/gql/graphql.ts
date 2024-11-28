@@ -111,6 +111,13 @@ export type DeleteCardMutationVariables = Exact<{
 
 export type DeleteCardMutation = { __typename?: 'Mutation', deleteCard?: string | null };
 
+export type GenerateCardsMutationVariables = Exact<{
+  input: GenerateCardsInput;
+}>;
+
+
+export type GenerateCardsMutation = { __typename?: 'Mutation', generateCards: Array<{ __typename?: 'Card', id: string, backgroundColor?: string | null, textColor?: string | null, translatedTextColor?: string | null, translation?: { __typename?: 'Translation', id: string, sourceLanguage?: string | null, targetLanguage?: string | null, text?: string | null, translatedText?: string | null } | null, user?: { __typename?: 'User', id: string, firstName?: string | null, lastName?: string | null, email?: string | null } | null }> };
+
 export type UpdateCardMutationVariables = Exact<{
   input: UpdateCardInput;
 }>;
@@ -155,6 +162,55 @@ export function useDeleteCardMutation(baseOptions?: Apollo.MutationHookOptions<D
 export type DeleteCardMutationHookResult = ReturnType<typeof useDeleteCardMutation>;
 export type DeleteCardMutationResult = Apollo.MutationResult<DeleteCardMutation>;
 export type DeleteCardMutationOptions = Apollo.BaseMutationOptions<DeleteCardMutation, DeleteCardMutationVariables>;
+export const GenerateCardsDocument = gql`
+    mutation GenerateCards($input: GenerateCardsInput!) {
+  generateCards(input: $input) {
+    id
+    backgroundColor
+    textColor
+    translatedTextColor
+    translation {
+      id
+      sourceLanguage
+      targetLanguage
+      text
+      translatedText
+    }
+    user {
+      id
+      firstName
+      lastName
+      email
+    }
+  }
+}
+    `;
+export type GenerateCardsMutationFn = Apollo.MutationFunction<GenerateCardsMutation, GenerateCardsMutationVariables>;
+
+/**
+ * __useGenerateCardsMutation__
+ *
+ * To run a mutation, you first call `useGenerateCardsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useGenerateCardsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [generateCardsMutation, { data, loading, error }] = useGenerateCardsMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useGenerateCardsMutation(baseOptions?: Apollo.MutationHookOptions<GenerateCardsMutation, GenerateCardsMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<GenerateCardsMutation, GenerateCardsMutationVariables>(GenerateCardsDocument, options);
+      }
+export type GenerateCardsMutationHookResult = ReturnType<typeof useGenerateCardsMutation>;
+export type GenerateCardsMutationResult = Apollo.MutationResult<GenerateCardsMutation>;
+export type GenerateCardsMutationOptions = Apollo.BaseMutationOptions<GenerateCardsMutation, GenerateCardsMutationVariables>;
 export const UpdateCardDocument = gql`
     mutation UpdateCard($input: UpdateCardInput!) {
   updateCard(input: $input) {

@@ -1,0 +1,41 @@
+.generate-cards-wrapper {
+    padding: 20px;
+}
+
+.popup-header h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2rem;
+}
+
+.popup-body {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.popup-footer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+}
+
+.generate-button {
+    flex: 1;
+    margin: 0 10px;
+    padding: 15px 25px;
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+    font-size: 1rem;
+}
+
+.generate-button {
+    background-color: #4caf50;
+    color: white;
+}
+
+.generate-button:hover {
+    background-color: #45a049;
+}
+
