@@ -21,8 +21,8 @@ export type Card = {
   __typename?: 'Card';
   backgroundColor?: Maybe<Scalars['String']['output']>;
   id: Scalars['ID']['output'];
-  sourceLanguage?: Maybe<Scalars['String']['output']>;
-  targetLanguage?: Maybe<Scalars['String']['output']>;
+  sourceLanguage?: Maybe<Language>;
+  targetLanguage?: Maybe<Language>;
   textColor?: Maybe<Scalars['String']['output']>;
   translatedTextColor?: Maybe<Scalars['String']['output']>;
   translation?: Maybe<Translation>;
@@ -31,13 +31,111 @@ export type Card = {
 
 export type GenerateCardsInput = {
   backgroundColor?: InputMaybe<Scalars['String']['input']>;
-  sourceLanguage?: InputMaybe<Scalars['String']['input']>;
+  sourceLanguage?: InputMaybe<Language>;
   spreadsheetUrl?: InputMaybe<Scalars['String']['input']>;
-  targetLanguage?: InputMaybe<Scalars['String']['input']>;
+  targetLanguage?: InputMaybe<Language>;
   textColor?: InputMaybe<Scalars['String']['input']>;
-  texts: Array<Scalars['String']['input']>;
   translatedTextColor?: InputMaybe<Scalars['String']['input']>;
+  translations: Array<GenerateCardsTranslationsInput>;
 };
+
+export type GenerateCardsTranslationsInput = {
+  text?: InputMaybe<Scalars['String']['input']>;
+  translatedText?: InputMaybe<Scalars['String']['input']>;
+};
+
+export enum Language {
+  Afrikaans = 'AFRIKAANS',
+  Albanian = 'ALBANIAN',
+  Amharic = 'AMHARIC',
+  Arabic = 'ARABIC',
+  Armenian = 'ARMENIAN',
+  Azerbaijani = 'AZERBAIJANI',
+  Basque = 'BASQUE',
+  Belarusian = 'BELARUSIAN',
+  Bengali = 'BENGALI',
+  Bosnian = 'BOSNIAN',
+  Bulgarian = 'BULGARIAN',
+  Catalan = 'CATALAN',
+  Cebuano = 'CEBUANO',
+  Cherokee = 'CHEROKEE',
+  ChineseSimplified = 'CHINESE_SIMPLIFIED',
+  ChineseTraditional = 'CHINESE_TRADITIONAL',
+  Croatian = 'CROATIAN',
+  Czech = 'CZECH',
+  Danish = 'DANISH',
+  Dutch = 'DUTCH',
+  English = 'ENGLISH',
+  Esperanto = 'ESPERANTO',
+  Estonian = 'ESTONIAN',
+  Filipino = 'FILIPINO',
+  Finnish = 'FINNISH',
+  French = 'FRENCH',
+  Galician = 'GALICIAN',
+  Georgian = 'GEORGIAN',
+  German = 'GERMAN',
+  Greek = 'GREEK',
+  Gujarati = 'GUJARATI',
+  Hausa = 'HAUSA',
+  Hebrew = 'HEBREW',
+  Hindi = 'HINDI',
+  Hungarian = 'HUNGARIAN',
+  Icelandic = 'ICELANDIC',
+  Igbo = 'IGBO',
+  Indonesian = 'INDONESIAN',
+  Irish = 'IRISH',
+  Italian = 'ITALIAN',
+  Japanese = 'JAPANESE',
+  Kannada = 'KANNADA',
+  Kazakh = 'KAZAKH',
+  Khmer = 'KHMER',
+  Korean = 'KOREAN',
+  Kyrgyz = 'KYRGYZ',
+  Laothian = 'LAOTHIAN',
+  Latin = 'LATIN',
+  Latvian = 'LATVIAN',
+  Lithuanian = 'LITHUANIAN',
+  Macedonian = 'MACEDONIAN',
+  Malagasy = 'MALAGASY',
+  Malay = 'MALAY',
+  Malayalam = 'MALAYALAM',
+  Maltese = 'MALTESE',
+  Maori = 'MAORI',
+  Marathi = 'MARATHI',
+  Mongolian = 'MONGOLIAN',
+  Nepali = 'NEPALI',
+  Norwegian = 'NORWEGIAN',
+  Pashto = 'PASHTO',
+  Persian = 'PERSIAN',
+  Polish = 'POLISH',
+  Portuguese = 'PORTUGUESE',
+  Romanian = 'ROMANIAN',
+  Russian = 'RUSSIAN',
+  ScotsGaelic = 'SCOTS_GAELIC',
+  Serbian = 'SERBIAN',
+  Slovak = 'SLOVAK',
+  Slovenian = 'SLOVENIAN',
+  Somali = 'SOMALI',
+  Spanish = 'SPANISH',
+  Sundanese = 'SUNDANESE',
+  Swahili = 'SWAHILI',
+  Swedish = 'SWEDISH',
+  Tagalog = 'TAGALOG',
+  Tajik = 'TAJIK',
+  Tamil = 'TAMIL',
+  Tatar = 'TATAR',
+  Telugu = 'TELUGU',
+  Thai = 'THAI',
+  Turkish = 'TURKISH',
+  Ukrainian = 'UKRAINIAN',
+  Urdu = 'URDU',
+  Uzbek = 'UZBEK',
+  Vietnamese = 'VIETNAMESE',
+  Welsh = 'WELSH',
+  Yiddish = 'YIDDISH',
+  Yoruba = 'YORUBA',
+  Zulu = 'ZULU'
+}
 
 export type Mutation = {
   __typename?: 'Mutation';
@@ -75,8 +173,8 @@ export type QueryGetCardByIdArgs = {
 export type Translation = {
   __typename?: 'Translation';
   id: Scalars['ID']['output'];
-  sourceLanguage?: Maybe<Scalars['String']['output']>;
-  targetLanguage?: Maybe<Scalars['String']['output']>;
+  sourceLanguage?: Maybe<Language>;
+  targetLanguage?: Maybe<Language>;
   text?: Maybe<Scalars['String']['output']>;
   translatedText?: Maybe<Scalars['String']['output']>;
 };
@@ -116,7 +214,7 @@ export type GenerateCardsMutationVariables = Exact<{
 }>;
 
 
-export type GenerateCardsMutation = { __typename?: 'Mutation', generateCards: Array<{ __typename?: 'Card', id: string, backgroundColor?: string | null, textColor?: string | null, translatedTextColor?: string | null, translation?: { __typename?: 'Translation', id: string, sourceLanguage?: string | null, targetLanguage?: string | null, text?: string | null, translatedText?: string | null } | null, user?: { __typename?: 'User', id: string, firstName?: string | null, lastName?: string | null, email?: string | null } | null }> };
+export type GenerateCardsMutation = { __typename?: 'Mutation', generateCards: Array<{ __typename?: 'Card', id: string, backgroundColor?: string | null, textColor?: string | null, translatedTextColor?: string | null, translation?: { __typename?: 'Translation', id: string, sourceLanguage?: Language | null, targetLanguage?: Language | null, text?: string | null, translatedText?: string | null } | null, user?: { __typename?: 'User', id: string, firstName?: string | null, lastName?: string | null, email?: string | null } | null }> };
 
 export type UpdateCardMutationVariables = Exact<{
   input: UpdateCardInput;
@@ -128,7 +226,7 @@ export type UpdateCardMutation = { __typename?: 'Mutation', updateCard?: { __typ
 export type GetCardsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetCardsQuery = { __typename?: 'Query', getCards: Array<{ __typename?: 'Card', id: string, backgroundColor?: string | null, textColor?: string | null, translatedTextColor?: string | null, translation?: { __typename?: 'Translation', id: string, sourceLanguage?: string | null, targetLanguage?: string | null, text?: string | null, translatedText?: string | null } | null, user?: { __typename?: 'User', id: string, firstName?: string | null, lastName?: string | null, email?: string | null } | null }> };
+export type GetCardsQuery = { __typename?: 'Query', getCards: Array<{ __typename?: 'Card', id: string, backgroundColor?: string | null, textColor?: string | null, translatedTextColor?: string | null, translation?: { __typename?: 'Translation', id: string, sourceLanguage?: Language | null, targetLanguage?: Language | null, text?: string | null, translatedText?: string | null } | null, user?: { __typename?: 'User', id: string, firstName?: string | null, lastName?: string | null, email?: string | null } | null }> };
 
 
 export const DeleteCardDocument = gql`

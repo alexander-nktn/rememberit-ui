@@ -10,18 +10,19 @@ type CardUpdateValues = {
   translatedTextColor?: string | null;
 };
 
-type CardProps = {
+interface CardProps {
   id: string;
   backgroundColor?: string | null;
   textColor?: string | null;
   translatedTextColor?: string | null;
   sourceText: string;
   translatedText: string;
-  onUpdate: (updatedValues: CardUpdateValues) => void;
-  onDelete: () => void;
-};
+  onUpdate: (updatedValues: CardUpdateValues) => Promise<void>;
+  onDelete: () => Promise<void>;
+}
 
 const Card: React.FC<CardProps> = ({
+                                     // id,
                                      backgroundColor,
                                      textColor,
                                      translatedTextColor,
@@ -40,12 +41,12 @@ const Card: React.FC<CardProps> = ({
     setIsPopupOpen(false);
   };
 
-  const handleSave = (updatedValues: CardUpdateValues) => {
-    onUpdate(updatedValues);
+  const handleSave = async (updatedValues: CardUpdateValues) => {
+    await onUpdate(updatedValues);
   };
 
-  const handleDelete = () => {
-    onDelete();
+  const handleDelete = async () => {
+    await onDelete();
     setIsPopupOpen(false);
   };
 

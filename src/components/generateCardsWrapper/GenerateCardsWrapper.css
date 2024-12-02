@@ -1,41 +1,113 @@
+/* GenerateCardsWrapper.css */
+
 .generate-cards-wrapper {
     padding: 20px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .popup-header h2 {
     text-align: center;
-    margin-bottom: 30px;
-    font-size: 2rem;
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+    color: #333333;
 }
 
 .popup-body {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     gap: 20px;
+}
+
+.form-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.section-title {
+    font-weight: bold;
+    margin-bottom: 8px;
+    font-size: 1.1rem;
+    color: #555555;
+}
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-field label {
+    margin-bottom: 5px;
+    font-size: 0.95rem;
+    color: #333333;
+}
+
+.form-field input[type="url"],
+.form-field select,
+.form-field textarea,
+.form-field input[type="color"] {
+    padding: 8px;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.form-field textarea {
+    resize: vertical;
+}
+
+.form-field select {
+    appearance: none;
+    background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="5"><polygon points="0,0 10,0 5,5" fill="%23333333"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 10px 5px;
+    background-color: white;
+    /* Adjust padding-right to prevent text overlap with the dropdown arrow */
+    padding-right: 30px;
+}
+
+.helper-text {
+    font-size: 0.85rem;
+    color: #777777;
+    margin-top: 4px;
+}
+
+.error-message {
+    color: #e74c3c;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+.success-message {
+    color: #2ecc71;
+    font-size: 0.9rem;
+    text-align: center;
 }
 
 .popup-footer {
     display: flex;
-    justify-content: space-between;
-    margin-top: 30px;
+    justify-content: center;
+    margin-top: 20px;
 }
 
 .generate-button {
-    flex: 1;
-    margin: 0 10px;
-    padding: 15px 25px;
+    padding: 10px 20px;
+    background-color: #3498db;
+    color: white;
     border: none;
     cursor: pointer;
-    border-radius: 8px;
+    border-radius: 6px;
     font-size: 1rem;
-}
-
-.generate-button {
-    background-color: #4caf50;
-    color: white;
+    transition: background-color 0.3s ease;
 }
 
 .generate-button:hover {
-    background-color: #45a049;
+    background-color: #2980b9;
 }
 
+.generate-button:disabled {
+    background-color: #95a5a6;
+    cursor: not-allowed;
+}

@@ -1,10 +1,12 @@
 import { useState } from 'react';
-import GenerateCardsWrapper from '../components/generateCardsWrapper/GenerateCardsWrapper.tsx';
+import GenerateCardsWrapper from '../components/generateCardsWrapper/GenerateCardsWrapper';
 import {
   useGetCardsQuery,
   useUpdateCardMutation,
   useDeleteCardMutation,
-  // useGenerateCardsMutation,
+  useGenerateCardsMutation,
+  GenerateCardsInput,
+  GenerateCardsTranslationsInput,
   UpdateCardInput,
 } from '../gql/graphql';
 import Card from '../components/card/Card';
@@ -23,6 +25,7 @@ const Cards = () => {
   const { loading, error, data, refetch } = useGetCardsQuery();
   const [updateCard] = useUpdateCardMutation();
   const [deleteCard] = useDeleteCardMutation();
+  const [generateCards] = useGenerateCardsMutation();
 
   if (loading) return <div className="centered-text">Loading...</div>;
   if (error) return <div className="centered-text">Error: {error.message}</div>;
@@ -55,25 +58,53 @@ const Cards = () => {
     setIsGenerateCardsPopupOpen(false);
   };
 
+  const handleGenerateCards = async (values: GenerateCardsInput) => {
+    try {
+      // Transform translations to match backend input
+      const formattedTranslations: GenerateCardsTranslationsInput[] = values.translations.map((t) => ({
+        text: t.text,
+        translatedText: t.translatedText || '', // Ensure translatedText is a string
+      }));
+
+      const input: GenerateCardsInput = {
+        backgroundColor: values.backgroundColor,
+        textColor: values.textColor,
+        translatedTextColor: values.translatedTextColor,
+        spreadsheetUrl: values.spreadsheetUrl || null,
+        sourceLanguage: values.sourceLanguage || null, // Pass Language enum directly
+        targetLanguage: values.targetLanguage || null, // Pass Language enum directly
+        translations: formattedTranslations,
+      };
+
+      await generateCards({ variables: { input } });
+      console.log('Cards generated successfully');
+      refetch();
+    } catch (err) {
+      console.error('Failed to generate cards:', err);
+    }
+  };
+
+  // Directly use data.getCards without filtering
+  const cards = data?.getCards;
+
   return (
     <div>
-      <button
-        onClick={handleGenerateBtnClick}
-      >
+      <button onClick={handleGenerateBtnClick} className="generate-cards-button">
         Generate Cards
       </button>
+
       <div className="cards-container">
-        {data?.getCards.map((card) => (
+        {cards?.map((card) => (
           <Card
             key={card.id}
             id={card.id}
-            backgroundColor={card.backgroundColor}
-            textColor={card.textColor}
-            translatedTextColor={card.translatedTextColor}
+            backgroundColor={card.backgroundColor || '#ffffff'}
+            textColor={card.textColor || '#000000'}
+            translatedTextColor={card.translatedTextColor || '#000000'}
             sourceText={card.translation?.text || ''}
             translatedText={card.translation?.translatedText || ''}
-            onUpdate={(updatedValues: CardUpdateValues) =>
-              handleUpdateCard({
+            onUpdate={async (updatedValues: CardUpdateValues) =>
+              await handleUpdateCard({
                 id: card.id,
                 backgroundColor: updatedValues.backgroundColor,
                 textColor: updatedValues.textColor,
@@ -85,15 +116,13 @@ const Cards = () => {
                 },
               })
             }
-            onDelete={() => handleDeleteCard(card.id)}
+            onDelete={async () => await handleDeleteCard(card.id)}
           />
         ))}
       </div>
 
       {isGenerateCardsPopupOpen && (
-        <GenerateCardsWrapper
-          onClose={handleGenerateCardsPopupClose}
-        />
+        <GenerateCardsWrapper onClose={handleGenerateCardsPopupClose} onGenerate={handleGenerateCards} />
       )}
     </div>
   );

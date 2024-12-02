@@ -1,3 +1,4 @@
+/* Popup.css */
 .popup-overlay {
     position: fixed;
     top: 0;
@@ -17,6 +18,8 @@
     border-radius: 15px;
     width: 90%;
     max-width: 600px;
+    max-height: 80vh; /* Limits height to 80% of viewport */
+    overflow-y: auto; /* Adds vertical scrollbar when content overflows */
     position: relative;
     animation: fadeIn 0.3s ease-in-out;
 }
