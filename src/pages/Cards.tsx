@@ -60,7 +60,6 @@ const Cards = () => {
 
   const handleGenerateCards = async (values: GenerateCardsInput) => {
     try {
-      // Transform translations to match backend input
       const formattedTranslations: GenerateCardsTranslationsInput[] = values.translations.map((t) => ({
         text: t.text,
         translatedText: t.translatedText || '', // Ensure translatedText is a string
@@ -71,8 +70,8 @@ const Cards = () => {
         textColor: values.textColor,
         translatedTextColor: values.translatedTextColor,
         spreadsheetUrl: values.spreadsheetUrl || null,
-        sourceLanguage: values.sourceLanguage || null, // Pass Language enum directly
-        targetLanguage: values.targetLanguage || null, // Pass Language enum directly
+        sourceLanguage: values.sourceLanguage || null,
+        targetLanguage: values.targetLanguage || null,
         translations: formattedTranslations,
       };
 
@@ -84,43 +83,38 @@ const Cards = () => {
     }
   };
 
-  // Directly use data.getCards without filtering
   const cards = data?.getCards;
 
   return (
-    <div>
+    <div className="cards-container">
       <button onClick={handleGenerateBtnClick} className="generate-cards-button">
         Generate Cards
       </button>
-
-      <div className="cards-container">
-        {cards?.map((card) => (
-          <Card
-            key={card.id}
-            id={card.id}
-            backgroundColor={card.backgroundColor || '#ffffff'}
-            textColor={card.textColor || '#000000'}
-            translatedTextColor={card.translatedTextColor || '#000000'}
-            sourceText={card.translation?.text || ''}
-            translatedText={card.translation?.translatedText || ''}
-            onUpdate={async (updatedValues: CardUpdateValues) =>
-              await handleUpdateCard({
-                id: card.id,
-                backgroundColor: updatedValues.backgroundColor,
-                textColor: updatedValues.textColor,
-                translatedTextColor: updatedValues.translatedTextColor,
-                translation: {
-                  id: card.translation?.id || '',
-                  text: updatedValues.text,
-                  translatedText: updatedValues.translatedText,
-                },
-              })
-            }
-            onDelete={async () => await handleDeleteCard(card.id)}
-          />
-        ))}
-      </div>
-
+      {cards?.map((card) => (
+        <Card
+          key={card.id}
+          id={card.id}
+          backgroundColor={card.backgroundColor || '#ffffff'}
+          textColor={card.textColor || '#000000'}
+          translatedTextColor={card.translatedTextColor || '#000000'}
+          sourceText={card.translation?.text || ''}
+          translatedText={card.translation?.translatedText || ''}
+          onUpdate={async (updatedValues: CardUpdateValues) =>
+            await handleUpdateCard({
+              id: card.id,
+              backgroundColor: updatedValues.backgroundColor,
+              textColor: updatedValues.textColor,
+              translatedTextColor: updatedValues.translatedTextColor,
+              translation: {
+                id: card.translation?.id || '',
+                text: updatedValues.text,
+                translatedText: updatedValues.translatedText,
+              },
+            })
+          }
+          onDelete={async () => await handleDeleteCard(card.id)}
+        />
+      ))}
       {isGenerateCardsPopupOpen && (
         <GenerateCardsWrapper onClose={handleGenerateCardsPopupClose} onGenerate={handleGenerateCards} />
       )}

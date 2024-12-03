@@ -8,8 +8,8 @@
     color: #333333;
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
     text-align: center;
-    transition: transform 0.2s, box-shadow 0.2s;
     cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .card:hover {
@@ -17,15 +17,19 @@
     box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
 }
 
+/* Source Text */
 .source-text {
     font-size: 1.6rem;
-    font-weight: bold;
+    font-weight: 700; /* Improved weight for emphasis */
     margin-bottom: 15px;
     text-transform: capitalize;
+    color: inherit; /* Ensures it inherits text color */
 }
 
+/* Translated Text */
 .translated-text {
     font-size: 1.3rem;
-    margin-top: 10px;
     font-style: italic;
+    margin-top: 10px;
+    color: inherit; /* Ensures fallback to parent color */
 }
