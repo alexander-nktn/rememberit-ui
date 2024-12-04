@@ -11,6 +11,7 @@ import {
 } from '../gql/graphql';
 import Card from '../components/card/Card';
 import './Cards.css';
+import axios from 'axios';
 
 type CardUpdateValues = {
   text: string;
@@ -26,6 +27,8 @@ const Cards = () => {
   const [updateCard] = useUpdateCardMutation();
   const [deleteCard] = useDeleteCardMutation();
   const [generateCards] = useGenerateCardsMutation();
+  const [isDownloading, setIsDownloading] = useState(false);
+  const [downloadError, setDownloadError] = useState<string | null>(null);
 
   if (loading) return <div className="centered-text">Loading...</div>;
   if (error) return <div className="centered-text">Error: {error.message}</div>;
@@ -83,13 +86,66 @@ const Cards = () => {
     }
   };
 
+  const handleDownloadCards = async () => {
+    setIsDownloading(true);
+    setDownloadError(null);
+    try {
+      // Make a GET request to the REST endpoint
+      const response = await axios.get('http://localhost:8080/api/cards/download', {
+        responseType: 'blob', // Important for handling binary data
+      });
+
+      // Create a URL for the blob
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+
+      // Create a temporary link element
+      const link = document.createElement('a');
+      link.href = url;
+
+      // Extract the filename from the Content-Disposition header if available
+      const contentDisposition = response.headers['content-disposition'];
+      let fileName = 'cards.zip';
+      if (contentDisposition) {
+        const fileNameMatch = contentDisposition.match(/filename="?(.+)"?/);
+        if (fileNameMatch && fileNameMatch[1]) {
+          fileName = fileNameMatch[1];
+        }
+      }
+
+      link.setAttribute('download', fileName);
+      document.body.appendChild(link);
+      link.click();
+
+      // Clean up and remove the link
+      link.parentNode?.removeChild(link);
+      window.URL.revokeObjectURL(url);
+
+      console.log('Cards downloaded successfully');
+    } catch (err: any) {
+      console.error('Failed to download cards:', err);
+      setDownloadError(err.message || 'Failed to download cards');
+    } finally {
+      setIsDownloading(false);
+    }
+  };
+
   const cards = data?.getCards;
 
   return (
     <div className="cards-container">
-      <button onClick={handleGenerateBtnClick} className="generate-cards-button">
-        Generate Cards
-      </button>
+      <div className="buttons-container">
+        <button onClick={handleGenerateBtnClick} className="generate-cards-button">
+          Generate Cards
+        </button>
+        <button
+          onClick={handleDownloadCards}
+          className="download-cards-button"
+          disabled={isDownloading || !cards || cards.length === 0}
+        >
+          {isDownloading ? 'Downloading...' : 'Download Cards'}
+        </button>
+      </div>
+      {downloadError && <div className="error-message">Error: {downloadError}</div>}
       {cards?.map((card) => (
         <Card
           key={card.id}

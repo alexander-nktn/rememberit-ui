@@ -1,3 +1,5 @@
+/* Cards.css */
+
 .cards-container {
     display: flex;
     flex-direction: column;
@@ -8,7 +10,14 @@
     background-color: #f8f9fa;
 }
 
-.generate-cards-button {
+.buttons-container {
+    display: flex;
+    gap: 10px; /* Space between buttons */
+    margin-bottom: 20px;
+}
+
+.generate-cards-button,
+.download-cards-button {
     background-color: #007bff;
     color: white;
     border: none;
@@ -16,14 +25,25 @@
     cursor: pointer;
     border-radius: 8px;
     font-size: 1rem;
-    margin-bottom: 20px;
-    margin-top: 10px;
     transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.generate-cards-button:hover {
+.generate-cards-button:hover,
+.download-cards-button:hover {
     background-color: #0056b3;
     transform: translateY(-3px);
+}
+
+.download-cards-button:disabled {
+    background-color: #6c757d;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.error-message {
+    color: red;
+    margin-bottom: 20px;
+    font-weight: bold;
 }
 
 .centered-text {

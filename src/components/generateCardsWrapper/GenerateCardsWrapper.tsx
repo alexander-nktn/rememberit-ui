@@ -45,8 +45,8 @@ const GenerateCardsWrapper: React.FC<GenerateCardsWrapperProps> = ({
   };
 
   const validateInput = (): boolean => {
-    if (!translationsInput.trim()) {
-      setError('Please enter at least one word or expression.');
+    if (!translationsInput.trim() && !spreadsheetUrl) {
+      setError('Please enter at least one word or expression or provide a spreadsheet URL.');
       return false;
     }
     if (!sourceLanguage) {
