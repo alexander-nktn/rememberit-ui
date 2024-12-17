@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import GenerateCardsWrapper from '../components/generateCardsWrapper/GenerateCardsWrapper';
+import GenerateCardsWrapper from '../../components/generateCardsWrapper/GenerateCardsWrapper.tsx';
 import {
   useGetCardsQuery,
   useUpdateCardMutation,
@@ -8,8 +8,8 @@ import {
   GenerateCardsInput,
   GenerateCardsTranslationsInput,
   UpdateCardInput,
-} from '../gql/graphql';
-import Card from '../components/card/Card';
+} from '../../gql/graphql.ts';
+import Card from '../../components/card/Card.tsx';
 import './Cards.css';
 import axios from 'axios';
 
@@ -121,9 +121,9 @@ const Cards = () => {
       window.URL.revokeObjectURL(url);
 
       console.log('Cards downloaded successfully');
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Failed to download cards:', err);
-      setDownloadError(err.message || 'Failed to download cards');
+      setDownloadError((err as { message: string })?.message || 'Failed to download cards');
     } finally {
       setIsDownloading(false);
     }

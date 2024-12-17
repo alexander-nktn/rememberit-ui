@@ -10,7 +10,7 @@ const Header: React.FC = () => {
         src={RememberItLogo}
         alt="RememberIt Logo"
         className="header-logo"
-        onClick={() => window.location.assign('/')}
+        onClick={() => window.location.assign('/cards')}
       />
       <nav className="nav">
         <Link to="/profile" className="link">
