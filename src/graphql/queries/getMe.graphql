@@ -4,5 +4,11 @@ query GetMe {
         firstName
         lastName
         email
+        role {
+            name
+            permissions {
+                type
+            }
+        }
     }
 }

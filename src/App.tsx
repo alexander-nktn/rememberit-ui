@@ -3,12 +3,13 @@ import { Routes, Route } from 'react-router-dom';
 import Header from './components/header/Header';
 import Cards from './pages/cards/Cards';
 import Login from './pages/login/Login';
-import Profile from './pages/profile/Profile.tsx';
+import Profile from './pages/profile/Profile';
 import Signup from './pages/signup/Signup';
 import ProtectedRoute from './components/ProtectedRoute';
+import { UserProvider } from './contexts/UserContext'; // Import UserProvider
 
 const App: React.FC = () => (
-  <>
+  <UserProvider>
     <Header />
     <Routes>
       {/* Public routes */}
@@ -33,7 +34,7 @@ const App: React.FC = () => (
         }
       />
     </Routes>
-  </>
+  </UserProvider>
 );
 
 export default App;

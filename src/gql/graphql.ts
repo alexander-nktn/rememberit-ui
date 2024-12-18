@@ -20,7 +20,7 @@ export type Scalars = {
 export type Card = {
   __typename?: 'Card';
   backgroundColor?: Maybe<Scalars['String']['output']>;
-  id: Scalars['ID']['output'];
+  id: Scalars['String']['output'];
   textColor?: Maybe<Scalars['String']['output']>;
   translatedTextColor?: Maybe<Scalars['String']['output']>;
   translation?: Maybe<Translation>;
@@ -137,7 +137,8 @@ export enum Language {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  deleteCard?: Maybe<Scalars['String']['output']>;
+  deleteCard: Scalars['String']['output'];
+  deleteUser: Scalars['String']['output'];
   generateCards: Array<Card>;
   refreshToken: SignInResponse;
   signIn: SignInResponse;
@@ -148,7 +149,12 @@ export type Mutation = {
 
 
 export type MutationDeleteCardArgs = {
-  id: Scalars['ID']['input'];
+  id: Scalars['String']['input'];
+};
+
+
+export type MutationDeleteUserArgs = {
+  id: Scalars['String']['input'];
 };
 
 
@@ -181,6 +187,12 @@ export type MutationUpdateUserArgs = {
   input: UpdateUserInput;
 };
 
+export type Permission = {
+  __typename?: 'Permission';
+  id: Scalars['String']['output'];
+  type?: Maybe<Scalars['String']['output']>;
+};
+
 export type Query = {
   __typename?: 'Query';
   getCardById?: Maybe<Card>;
@@ -190,7 +202,14 @@ export type Query = {
 
 
 export type QueryGetCardByIdArgs = {
-  id: Scalars['ID']['input'];
+  id: Scalars['String']['input'];
+};
+
+export type Role = {
+  __typename?: 'Role';
+  id: Scalars['String']['output'];
+  name?: Maybe<Scalars['String']['output']>;
+  permissions: Array<Permission>;
 };
 
 export type SignInInput = {
@@ -213,7 +232,7 @@ export type SignUpInput = {
 
 export type Translation = {
   __typename?: 'Translation';
-  id: Scalars['ID']['output'];
+  id: Scalars['String']['output'];
   sourceLanguage?: Maybe<Language>;
   targetLanguage?: Maybe<Language>;
   text?: Maybe<Scalars['String']['output']>;
@@ -222,7 +241,7 @@ export type Translation = {
 
 export type UpdateCardInput = {
   backgroundColor?: InputMaybe<Scalars['String']['input']>;
-  id: Scalars['ID']['input'];
+  id: Scalars['String']['input'];
   imageUrl?: InputMaybe<Scalars['String']['input']>;
   textColor?: InputMaybe<Scalars['String']['input']>;
   translatedTextColor?: InputMaybe<Scalars['String']['input']>;
@@ -230,7 +249,7 @@ export type UpdateCardInput = {
 };
 
 export type UpdateTranslationInput = {
-  id: Scalars['ID']['input'];
+  id: Scalars['String']['input'];
   text?: InputMaybe<Scalars['String']['input']>;
   translatedText?: InputMaybe<Scalars['String']['input']>;
 };
@@ -238,7 +257,7 @@ export type UpdateTranslationInput = {
 export type UpdateUserInput = {
   email?: InputMaybe<Scalars['String']['input']>;
   firstName?: InputMaybe<Scalars['String']['input']>;
-  id: Scalars['ID']['input'];
+  id: Scalars['String']['input'];
   lastName?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -246,16 +265,24 @@ export type User = {
   __typename?: 'User';
   email?: Maybe<Scalars['String']['output']>;
   firstName?: Maybe<Scalars['String']['output']>;
-  id: Scalars['ID']['output'];
+  id: Scalars['String']['output'];
   lastName?: Maybe<Scalars['String']['output']>;
+  role: Role;
 };
 
 export type DeleteCardMutationVariables = Exact<{
-  id: Scalars['ID']['input'];
+  id: Scalars['String']['input'];
 }>;
 
 
-export type DeleteCardMutation = { __typename?: 'Mutation', deleteCard?: string | null };
+export type DeleteCardMutation = { __typename?: 'Mutation', deleteCard: string };
+
+export type DeleteUserMutationVariables = Exact<{
+  id: Scalars['String']['input'];
+}>;
+
+
+export type DeleteUserMutation = { __typename?: 'Mutation', deleteUser: string };
 
 export type GenerateCardsMutationVariables = Exact<{
   input: GenerateCardsInput;
@@ -285,6 +312,13 @@ export type UpdateCardMutationVariables = Exact<{
 
 export type UpdateCardMutation = { __typename?: 'Mutation', updateCard?: { __typename?: 'Card', id: string, backgroundColor?: string | null, textColor?: string | null, translatedTextColor?: string | null, translation?: { __typename?: 'Translation', id: string, text?: string | null, translatedText?: string | null } | null } | null };
 
+export type UpdateUserMutationVariables = Exact<{
+  input: UpdateUserInput;
+}>;
+
+
+export type UpdateUserMutation = { __typename?: 'Mutation', updateUser: { __typename?: 'User', id: string, firstName?: string | null, lastName?: string | null, email?: string | null } };
+
 export type GetCardsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -293,11 +327,11 @@ export type GetCardsQuery = { __typename?: 'Query', getCards: Array<{ __typename
 export type GetMeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetMeQuery = { __typename?: 'Query', getMe: { __typename?: 'User', id: string, firstName?: string | null, lastName?: string | null, email?: string | null } };
+export type GetMeQuery = { __typename?: 'Query', getMe: { __typename?: 'User', id: string, firstName?: string | null, lastName?: string | null, email?: string | null, role: { __typename?: 'Role', name?: string | null, permissions: Array<{ __typename?: 'Permission', type?: string | null }> } } };
 
 
 export const DeleteCardDocument = gql`
-    mutation DeleteCard($id: ID!) {
+    mutation DeleteCard($id: String!) {
   deleteCard(id: $id)
 }
     `;
@@ -327,6 +361,37 @@ export function useDeleteCardMutation(baseOptions?: Apollo.MutationHookOptions<D
 export type DeleteCardMutationHookResult = ReturnType<typeof useDeleteCardMutation>;
 export type DeleteCardMutationResult = Apollo.MutationResult<DeleteCardMutation>;
 export type DeleteCardMutationOptions = Apollo.BaseMutationOptions<DeleteCardMutation, DeleteCardMutationVariables>;
+export const DeleteUserDocument = gql`
+    mutation DeleteUser($id: String!) {
+  deleteUser(id: $id)
+}
+    `;
+export type DeleteUserMutationFn = Apollo.MutationFunction<DeleteUserMutation, DeleteUserMutationVariables>;
+
+/**
+ * __useDeleteUserMutation__
+ *
+ * To run a mutation, you first call `useDeleteUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteUserMutation, { data, loading, error }] = useDeleteUserMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteUserMutation(baseOptions?: Apollo.MutationHookOptions<DeleteUserMutation, DeleteUserMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteUserMutation, DeleteUserMutationVariables>(DeleteUserDocument, options);
+      }
+export type DeleteUserMutationHookResult = ReturnType<typeof useDeleteUserMutation>;
+export type DeleteUserMutationResult = Apollo.MutationResult<DeleteUserMutation>;
+export type DeleteUserMutationOptions = Apollo.BaseMutationOptions<DeleteUserMutation, DeleteUserMutationVariables>;
 export const GenerateCardsDocument = gql`
     mutation GenerateCards($input: GenerateCardsInput!) {
   generateCards(input: $input) {
@@ -482,6 +547,42 @@ export function useUpdateCardMutation(baseOptions?: Apollo.MutationHookOptions<U
 export type UpdateCardMutationHookResult = ReturnType<typeof useUpdateCardMutation>;
 export type UpdateCardMutationResult = Apollo.MutationResult<UpdateCardMutation>;
 export type UpdateCardMutationOptions = Apollo.BaseMutationOptions<UpdateCardMutation, UpdateCardMutationVariables>;
+export const UpdateUserDocument = gql`
+    mutation UpdateUser($input: UpdateUserInput!) {
+  updateUser(input: $input) {
+    id
+    firstName
+    lastName
+    email
+  }
+}
+    `;
+export type UpdateUserMutationFn = Apollo.MutationFunction<UpdateUserMutation, UpdateUserMutationVariables>;
+
+/**
+ * __useUpdateUserMutation__
+ *
+ * To run a mutation, you first call `useUpdateUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateUserMutation, { data, loading, error }] = useUpdateUserMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateUserMutation(baseOptions?: Apollo.MutationHookOptions<UpdateUserMutation, UpdateUserMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateUserMutation, UpdateUserMutationVariables>(UpdateUserDocument, options);
+      }
+export type UpdateUserMutationHookResult = ReturnType<typeof useUpdateUserMutation>;
+export type UpdateUserMutationResult = Apollo.MutationResult<UpdateUserMutation>;
+export type UpdateUserMutationOptions = Apollo.BaseMutationOptions<UpdateUserMutation, UpdateUserMutationVariables>;
 export const GetCardsDocument = gql`
     query GetCards {
   getCards {
@@ -544,6 +645,12 @@ export const GetMeDocument = gql`
     firstName
     lastName
     email
+    role {
+      name
+      permissions {
+        type
+      }
+    }
   }
 }
     `;

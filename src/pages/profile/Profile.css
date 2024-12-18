@@ -1,0 +1,138 @@
+/* src/pages/profile/Profile.css */
+
+.profile-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f8f9fa;
+    padding: 20px;
+}
+
+.profile-form {
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+}
+
+.profile-form h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #555;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+.profile-button {
+    width: 100%;
+    padding: 12px;
+    background-color: #28a745;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-bottom: 10px;
+}
+
+.profile-button:hover {
+    background-color: #218838;
+    transform: translateY(-2px);
+}
+
+.profile-button:disabled {
+    background-color: #6c757d;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.logout-button {
+    width: 100%;
+    padding: 12px;
+    background-color: #dc3545;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.logout-button:hover {
+    background-color: #c82333;
+    transform: translateY(-2px);
+}
+
+.logout-button:disabled {
+    background-color: #6c757d;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.error-message {
+    background-color: #f8d7da;
+    color: #842029;
+    padding: 10px 15px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.success-message {
+    background-color: #d1e7dd;
+    color: #0f5132;
+    padding: 10px 15px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.delete-button {
+    width: 100%;
+    padding: 12px;
+    background-color: #ff6b6b; /* Soft red */
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-bottom: 10px;
+}
+
+.delete-button:hover {
+    background-color: #e53935; /* Darker red */
+    transform: translateY(-2px);
+}
+
+.delete-button:disabled {
+    background-color: #6c757d; /* Grey for disabled state */
+    cursor: not-allowed;
+    transform: none;
+}

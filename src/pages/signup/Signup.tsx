@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { useSignUpMutation } from '../../gql/graphql';
 import './Signup.css';
-import { useSignUpMutation } from '../../gql/graphql.ts';
 
 type SignupFormValues = {
   firstName: string;
@@ -11,7 +11,7 @@ type SignupFormValues = {
   confirmPassword: string;
 };
 
-const Signup = () => {
+const Signup: React.FC = () => {
   const [values, setValues] = useState<SignupFormValues>({
     firstName: '',
     lastName: '',
@@ -26,7 +26,8 @@ const Signup = () => {
   const [signUpMutation] = useSignUpMutation();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setValues({ ...values, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setValues((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -42,19 +43,28 @@ const Signup = () => {
 
     try {
       const { data } = await signUpMutation({
-        variables: { input: { firstName: values.firstName, lastName: values.lastName, email: values.email, password: values.password } },
+        variables: {
+          input: {
+            firstName: values.firstName,
+            lastName: values.lastName,
+            email: values.email,
+            password: values.password,
+          },
+        },
       });
 
       if (data?.signUp) {
-        // localStorage.setItem('authToken', data.signup.token);
         console.log('Signup successful');
-        navigate('/login'); // Redirect to Login page after successful signup
+        navigate('/login');
       } else {
-        setError('Invalid response from server.');
+        setError('Error during signup. Please try again.');
       }
-    } catch (err: unknown) {
-      console.error('Signup failed:', err);
-      setError((err as { message: string } )?.message || 'Signup failed. Please try again.');
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('Signup failed. Please try again.');
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -65,71 +75,17 @@ const Signup = () => {
       <form className="signup-form" onSubmit={handleSubmit}>
         <h2>Sign Up</h2>
         {error && <div className="error-message">{error}</div>}
-        <div className="form-group">
-          <label htmlFor="name">First name:</label>
-          <input
-            type="text"
-            id="firstName"
-            name="firstName"
-            value={values.firstName}
-            onChange={handleChange}
-            required
-            disabled={isSubmitting}
-            placeholder="Enter your first name"
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="name">Last name:</label>
-          <input
-            type="text"
-            id="lastName"
-            name="lastName"
-            value={values.lastName}
-            onChange={handleChange}
-            required
-            disabled={isSubmitting}
-            placeholder="Enter your last name"
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="email">Email:</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={values.email}
-            onChange={handleChange}
-            required
-            disabled={isSubmitting}
-            placeholder="Enter your email"
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="password">Password:</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            value={values.password}
-            onChange={handleChange}
-            required
-            disabled={isSubmitting}
-            placeholder="Enter your password"
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="confirmPassword">Confirm Password:</label>
-          <input
-            type="password"
-            id="confirmPassword"
-            name="confirmPassword"
-            value={values.confirmPassword}
-            onChange={handleChange}
-            required
-            disabled={isSubmitting}
-            placeholder="Confirm your password"
-          />
-        </div>
+        <InputField label="First Name" name="firstName" value={values.firstName} onChange={handleChange} />
+        <InputField label="Last Name" name="lastName" value={values.lastName} onChange={handleChange} />
+        <InputField label="Email" type="email" name="email" value={values.email} onChange={handleChange} />
+        <InputField label="Password" type="password" name="password" value={values.password} onChange={handleChange} />
+        <InputField
+          label="Confirm Password"
+          type="password"
+          name="confirmPassword"
+          value={values.confirmPassword}
+          onChange={handleChange}
+        />
         <button type="submit" className="signup-button" disabled={isSubmitting}>
           {isSubmitting ? 'Signing up...' : 'Sign Up'}
         </button>
@@ -140,5 +96,28 @@ const Signup = () => {
     </div>
   );
 };
+
+interface InputFieldProps {
+  label: string;
+  type?: string;
+  name: string;
+  value: string;
+  onChange: React.ChangeEventHandler<HTMLInputElement>;
+}
+
+const InputField: React.FC<InputFieldProps> = ({ label, type = 'text', name, value, onChange }) => (
+  <div className="form-group">
+    <label htmlFor={name}>{label}:</label>
+    <input
+      type={type}
+      id={name}
+      name={name}
+      value={value}
+      onChange={onChange}
+      required
+      placeholder={`Enter your ${label.toLowerCase()}`}
+    />
+  </div>
+);
 
 export default Signup;
